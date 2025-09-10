@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Dano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* bg-gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; /* bg-gray-600 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* bg-gray-500 */
+        }
+        /* Style for number input arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="container mx-auto max-w-4xl p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-white">Calculadora de Dano</h1>
+            <p class="text-gray-400 mt-2">Insira os valores para calcular o dano final de suas skills.</p>
+        </header>
+
+        <main class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-8" id="calculatorForm">
+
+            <!-- Seção de Atributos Base -->
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 border-b-2 border-gray-700 pb-2 text-cyan-400">Atributos Base</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="baseAtk" class="block text-sm font-medium text-gray-300 mb-1">ATK Base</label>
+                        <input type="number" id="baseAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 1500">
+                    </div>
+                    <div>
+                        <label for="weaponAtk" class="block text-sm font-medium text-gray-300 mb-1">ATK da Arma</label>
+                        <input type="number" id="weaponAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 500">
+                    </div>
+                    <div>
+                        <label for="bonusAtkPercent" class="block text-sm font-medium text-gray-300 mb-1">Bônus de ATK (%)</label>
+                        <input type="number" id="bonusAtkPercent" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 80">
+                    </div>
+                    <div>
+                        <label for="flatAtk" class="block text-sm font-medium text-gray-300 mb-1">Bônus de ATK Fixo</label>
+                        <input type="number" id="flatAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 300">
+                    </div>
+                     <div>
+                        <label for="elementalDmgBonus" class="block text-sm font-medium text-gray-300 mb-1">Bônus de Dano Elemental (%)</label>
+                        <input type="number" id="elementalDmgBonus" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 46.6">
+                    </div>
+                     <div>
+                        <label for="critDmgMultiplier" class="block text-sm font-medium text-gray-300 mb-1">Multiplicador Dano Crítico</label>
+                        <input type="number" id="critDmgMultiplier" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 1.8 (para 180%)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção das Skills -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Skill 1 -->
+                <div class="bg-gray-900/50 p-4 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-green-400">Skill 1</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label for="skillMultiplier1" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
+                            <input type="number" id="skillMultiplier1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 2.5">
+                        </div>
+                        <div>
+                            <label for="skillBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
+                            <input type="number" id="skillBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
+                        </div>
+                        <div>
+                            <label for="skillDmgBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
+                            <input type="number" id="skillDmgBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
+                        </div>
+                        <div>
+                            <label for="otherSkillBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
+                            <input type="number" id="otherSkillBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="bg-gray-900/50 p-4 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-yellow-400">Skill 2</h3>
+                     <div class="space-y-3">
+                        <div>
+                            <label for="skillMultiplier2" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
+                            <input type="number" id="skillMultiplier2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 3.2">
+                        </div>
+                        <div>
+                            <label for="skillBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
+                            <input type="number" id="skillBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
+                        </div>
+                        <div>
+                            <label for="skillDmgBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
+                            <input type="number" id="skillDmgBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
+                        </div>
+                        <div>
+                            <label for="otherSkillBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
+                            <input type="number" id="otherSkillBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="bg-gray-900/50 p-4 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-purple-400">Skill 3</h3>
+                     <div class="space-y-3">
+                        <div>
+                            <label for="skillMultiplier3" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
+                            <input type="number" id="skillMultiplier3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 5.0">
+                        </div>
+                        <div>
+                            <label for="skillBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
+                            <input type="number" id="skillBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
+                        </div>
+                        <div>
+                            <label for="skillDmgBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
+                            <input type="number" id="skillDmgBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
+                        </div>
+                        <div>
+                            <label for="otherSkillBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
+                            <input type="number" id="otherSkillBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção do Inimigo -->
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 border-b-2 border-gray-700 pb-2 text-red-400">Atributos do Inimigo</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="enemyResistance" class="block text-sm font-medium text-gray-300 mb-1">Resistência do Inimigo (%)</label>
+                        <input type="number" id="enemyResistance" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Ex: 10">
+                    </div>
+                    <div>
+                        <label for="defenseReduction" class="block text-sm font-medium text-gray-300 mb-1">Redução de Defesa (%)</label>
+                        <input type="number" id="defenseReduction" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Ex: 0">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Resultados -->
+            <section class="bg-gray-900 rounded-xl p-6 mt-8">
+                 <h2 class="text-2xl font-semibold mb-4 text-center text-white">Dano Final Calculado</h2>
+                 <div class="space-y-4">
+                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                        <span class="font-medium text-lg text-green-400">Dano da Skill 1:</span>
+                        <span id="result1" class="font-bold text-2xl text-white">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                        <span class="font-medium text-lg text-yellow-400">Dano da Skill 2:</span>
+                        <span id="result2" class="font-bold text-2xl text-white">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                        <span class="font-medium text-lg text-purple-400">Dano da Skill 3:</span>
+                        <span id="result3" class="font-bold text-2xl text-white">0</span>
+                    </div>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Função para obter o valor numérico de um input, tratando valores vazios como 0
+        const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
+
+        // Função principal para calcular o dano
+        function calculateDamage() {
+            // --- ATRIBUTOS GERAIS ---
+            const baseAtk = getVal('baseAtk');
+            const weaponAtk = getVal('weaponAtk');
+            const bonusAtkPercent = getVal('bonusAtkPercent');
+            const flatAtk = getVal('flatAtk');
+            const elementalDmgBonus = getVal('elementalDmgBonus');
+            const critDmgMultiplier = getVal('critDmgMultiplier');
+
+            // --- ATRIBUTOS DO INIMIGO ---
+            const enemyResistance = getVal('enemyResistance');
+            const defenseReduction = getVal('defenseReduction');
+            
+            // --- CÁLCULOS BASE (comuns a todas as skills) ---
+
+            // Termo A: ((ATK BASE + ATK ARMA) * (1 + BONUS ATK%)) + BONUS FLAT ATK
+            const totalAtk = ((baseAtk + weaponAtk) * (1 + bonusAtkPercent / 100)) + flatAtk;
+
+            // Termo G: (1 - RESISTENCIA INIMIGA + REDUÇAO DE DEFESA)
+            const defenseMultiplier = (1 - enemyResistance / 100 + defenseReduction / 100);
+
+            // --- LOOP PARA CALCULAR O DANO DE CADA SKILL ---
+            for (let i = 1; i <= 3; i++) {
+                // --- ATRIBUTOS ESPECÍFICOS DA SKILL ATUAL ---
+                const skillMultiplier = getVal(`skillMultiplier${i}`);
+                const skillBonus = getVal(`skillBonus${i}`);
+                const skillDmgBonus = getVal(`skillDmgBonus${i}`);
+                const otherSkillBonus = getVal(`otherSkillBonus${i}`);
+
+                // --- CÁLCULOS ESPECÍFICOS DA SKILL ---
+
+                // Termo B: (MULTIPLICADOR DE SKILL * (1 + BONUS DE SKILL))
+                const skillPower = skillMultiplier * (1 + skillBonus / 100);
+
+                // Termo C: (1 + BONUS DE DANO ELEMENTAL + BONUS DE DANO DE SKILL)
+                const totalDmgBonus = (1 + elementalDmgBonus / 100 + skillDmgBonus / 100);
+
+                // Termo D: (1 + TOTAL BONUS OUTRO SKILL)
+                const otherBonusMultiplier = (1 + otherSkillBonus / 100);
+                
+                // --- CÁLCULO FINAL DO DANO ---
+                // Formula: A * B * C * D * E * F * G
+                // Onde F = 0.48 (constante da fórmula original)
+                const finalDamage = totalAtk *
+                                    skillPower *
+                                    totalDmgBonus *
+                                    otherBonusMultiplier *
+                                    critDmgMultiplier *
+                                    0.48 * defenseMultiplier;
+
+                // Exibe o resultado formatado
+                const resultElement = document.getElementById(`result${i}`);
+                if (resultElement) {
+                    resultElement.textContent = finalDamage.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                }
+            }
+        }
+
+        // Adiciona um event listener a todo o formulário para recalcular ao mudar qualquer valor
+        const form = document.getElementById('calculatorForm');
+        form.addEventListener('input', calculateDamage);
+
+        // Calcula o dano uma vez no carregamento da página para zerar os resultados
+        document.addEventListener('DOMContentLoaded', calculateDamage);
+    </script>
+</body>
+</html>
