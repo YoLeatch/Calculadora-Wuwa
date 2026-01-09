@@ -1,261 +1,1827 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Dano</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Wuthering Waves General Informations (TC)</title>
+    <meta name="description"
+        content="Guia completo de Theorycrafting para Wuthering Waves - Fórmulas de dano, mecânicas, Echo builds e muito mais.">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- MathJax for LaTeX formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
     <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --bg-card: rgba(31, 41, 55, 0.6);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ef4444;
+            --border-color: rgba(75, 85, 99, 0.4);
+            --glow-cyan: 0 0 30px rgba(6, 182, 212, 0.3);
+            --glow-purple: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827; /* bg-gray-900 */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
         }
-        /* Custom scrollbar for better aesthetics */
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
+
         ::-webkit-scrollbar-track {
-            background: #1f2937; /* bg-gray-800 */
+            background: var(--bg-secondary);
         }
+
         ::-webkit-scrollbar-thumb {
-            background: #4b5563; /* bg-gray-600 */
-            border-radius: 4px;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 5px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280; /* bg-gray-500 */
+            background: linear-gradient(180deg, var(--accent-purple), var(--accent-pink));
         }
-        /* Style for number input arrows */
+
+        /* Background Effects */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-orb-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+        }
+
+        .bg-orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        .bg-orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -30px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(-30px, -20px) scale(1.02);
+            }
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), transparent);
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-meta-item strong {
+            color: var(--accent-cyan);
+        }
+
+        .credits {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+
+        .credits span {
+            color: var(--text-muted);
+        }
+
+        .credits strong {
+            color: var(--accent-purple);
+        }
+
+        /* Navigation */
+        .nav-toc {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-toc h2 {
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .nav-toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: block;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .nav-toc a:hover {
+            color: var(--text-primary);
+            background: rgba(6, 182, 212, 0.1);
+            border-left-color: var(--accent-cyan);
+            transform: translateX(5px);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin: 2rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Formula Cards */
+        .formula-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+        }
+
+        .formula-card.highlight {
+            box-shadow: var(--glow-cyan);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .formula-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .formula-content {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 1rem;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        li::marker {
+            color: var(--accent-cyan);
+        }
+
+        ul.styled-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.styled-list li {
+            padding: 0.75rem 1rem;
+            padding-left: 2rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent-cyan);
+            position: relative;
+        }
+
+        ul.styled-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0.75rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Conditional Lists */
+        .condition-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .condition-list li {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .condition-list .condition {
+            color: var(--accent-yellow);
+            font-weight: 500;
+        }
+
+        .condition-list .result {
+            color: var(--accent-green);
+            margin-left: 0.5rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(168, 85, 247, 0.2));
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .table-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .table-na {
+            color: var(--text-muted);
+        }
+
+        /* Info Boxes */
+        .info-box {
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .info-box.note {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .info-box.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .info-box.tip {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .info-box-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .info-box-content {
+            flex: 1;
+        }
+
+        .info-box-content strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-box.note strong {
+            color: var(--accent-cyan);
+        }
+
+        .info-box.warning strong {
+            color: var(--accent-yellow);
+        }
+
+        .info-box.tip strong {
+            color: var(--accent-green);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Code/Value highlights */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .keyword {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            color: var(--accent-purple);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Subsection Cards */
+        .subsection-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .subsection-card h4 {
+            margin-top: 0;
+        }
+
+        /* Divider */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 3rem 0;
+        }
+
+        /* Calculator Styles */
+        .calculator-section {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .calc-card-title.cyan {
+            color: var(--accent-cyan);
+        }
+
+        .calc-card-title.purple {
+            color: var(--accent-purple);
+        }
+
+        .calc-card-title.pink {
+            color: var(--accent-pink);
+        }
+
+        .calc-card-title.green {
+            color: var(--accent-green);
+        }
+
+        .calc-card-title.yellow {
+            color: var(--accent-yellow);
+        }
+
+        .calc-card-title.red {
+            color: var(--accent-red);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Remove number input arrows */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
         }
+
         input[type=number] {
-          -moz-appearance: textfield;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .skill-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .skill-1 .skill-name {
+            color: var(--accent-cyan);
+        }
+
+        .skill-2 .skill-name {
+            color: var(--accent-purple);
+        }
+
+        .skill-3 .skill-name {
+            color: var(--accent-pink);
+        }
+
+        .skill-4 .skill-name {
+            color: var(--accent-yellow);
+        }
+
+        .skill-1 {
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .skill-2 {
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .skill-3 {
+            border-left: 3px solid var(--accent-pink);
+        }
+
+        .skill-4 {
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .results-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .results-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .result-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: scale(1.02);
+        }
+
+        .result-card.skill-1 {
+            border-top: 3px solid var(--accent-cyan);
+        }
+
+        .result-card.skill-2 {
+            border-top: 3px solid var(--accent-purple);
+        }
+
+        .result-card.skill-3 {
+            border-top: 3px solid var(--accent-pink);
+        }
+
+        .result-card.skill-4 {
+            border-top: 3px solid var(--accent-yellow);
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .result-card.skill-1 .result-value {
+            color: var(--accent-cyan);
+        }
+
+        .result-card.skill-2 .result-value {
+            color: var(--accent-purple);
+        }
+
+        .result-card.skill-3 .result-value {
+            color: var(--accent-pink);
+        }
+
+        .result-card.skill-4 .result-value {
+            color: var(--accent-yellow);
+        }
+
+        .result-breakdown {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .calc-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 8px;
+        }
+
+        .toggle-section {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-section:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .toggle-section .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-section.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        .footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 2rem 0;
+            }
+
+            .formula-content {
+                font-size: 0.85rem;
+                padding: 1rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            th,
+            td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* MathJax Styling */
+        .MathJax {
+            color: var(--text-primary) !important;
+        }
+
+        mjx-container {
+            overflow-x: auto;
+            padding: 0.5rem 0;
         }
     </style>
 </head>
-<body class="text-gray-200">
 
-    <div class="container mx-auto max-w-4xl p-4 sm:p-6 md:p-8">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-white">Calculadora de Dano</h1>
-            <p class="text-gray-400 mt-2">Insira os valores para calcular o dano final de suas skills.</p>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Wuthering Waves General Informations (TC)</h1>
+            <div class="header-meta">
+                <div class="header-meta-item">
+                    <span>📅</span>
+                    <strong>Date:</strong> May 18, 2025
+                </div>
+                <div class="header-meta-item">
+                    <span>✍️</span>
+                    <strong>Authors:</strong> Low Priority, Kyoko
+                </div>
+            </div>
+            <div class="credits">
+                <span>Credits:</span> <strong>Catalystonline, Zasshu, Ninurto, Leifa, Temeyaro</strong>
+            </div>
         </header>
 
-        <main class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-8" id="calculatorForm">
+        <!-- Table of Contents -->
+        <nav class="nav-toc">
+            <h2>📑 Índice</h2>
+            <ul>
+                <li><a href="#damage-formula">1. The Damage Formula</a></li>
+                <li><a href="#toughness">2. Toughness (Hardness)</a></li>
+                <li><a href="#energy">3. Energy</a></li>
+                <li><a href="#echoes">4. Echoes</a></li>
+                <li><a href="#calculator">🧮 Damage Calculator</a></li>
+            </ul>
+        </nav>
 
-            <!-- Seção de Atributos Base -->
-            <section>
-                <h2 class="text-2xl font-semibold mb-4 border-b-2 border-gray-700 pb-2 text-cyan-400">Atributos Base</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="baseAtk" class="block text-sm font-medium text-gray-300 mb-1">ATK Base</label>
-                        <input type="number" id="baseAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 1500">
-                    </div>
-                    <div>
-                        <label for="weaponAtk" class="block text-sm font-medium text-gray-300 mb-1">ATK da Arma</label>
-                        <input type="number" id="weaponAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 500">
-                    </div>
-                    <div>
-                        <label for="bonusAtkPercent" class="block text-sm font-medium text-gray-300 mb-1">Bônus de ATK (%)</label>
-                        <input type="number" id="bonusAtkPercent" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 80">
-                    </div>
-                    <div>
-                        <label for="flatAtk" class="block text-sm font-medium text-gray-300 mb-1">Bônus de ATK Fixo</label>
-                        <input type="number" id="flatAtk" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 300">
-                    </div>
-                     <div>
-                        <label for="elementalDmgBonus" class="block text-sm font-medium text-gray-300 mb-1">Bônus de Dano Elemental (%)</label>
-                        <input type="number" id="elementalDmgBonus" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 46.6">
-                    </div>
-                     <div>
-                        <label for="critDmgMultiplier" class="block text-sm font-medium text-gray-300 mb-1">Multiplicador Dano Crítico</label>
-                        <input type="number" id="critDmgMultiplier" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Ex: 1.8 (para 180%)">
-                    </div>
+        <!-- Section 1: The Damage Formula -->
+        <section class="section" id="damage-formula">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2>The Damage Formula</h2>
+            </div>
+
+            <p>The simplified damage formula is presented as follows:</p>
+
+            <div class="formula-card highlight">
+                <div class="formula-label">Simplified Damage Formula</div>
+                <div class="formula-content">
+                    $$\text{Damage} = \text{Base DMG} \times \text{Resistances} \times \text{Bonuses}$$
                 </div>
-            </section>
+            </div>
 
-            <!-- Seção das Skills -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Skill 1 -->
-                <div class="bg-gray-900/50 p-4 rounded-xl">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-green-400">Skill 1</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <label for="skillMultiplier1" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
-                            <input type="number" id="skillMultiplier1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 2.5">
-                        </div>
-                        <div>
-                            <label for="skillBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
-                            <input type="number" id="skillBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
-                        </div>
-                        <div>
-                            <label for="skillDmgBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
-                            <input type="number" id="skillDmgBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
-                        </div>
-                        <div>
-                            <label for="otherSkillBonus1" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
-                            <input type="number" id="otherSkillBonus1" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
-                        </div>
-                    </div>
+            <!-- 1.1 Resistances -->
+            <h3 id="resistances">1.1 The Resistances</h3>
+            <p>Resistances are based on the receiver and are multiplied with each other.</p>
+
+            <div class="formula-card">
+                <div class="formula-label">Total Resistance Formula</div>
+                <div class="formula-content">
+                    $$\text{Res}_{Tot} = \text{Def}\% \times \text{DmgRedux} \times \text{ElemRes}$$
                 </div>
+            </div>
 
-                <!-- Skill 2 -->
-                <div class="bg-gray-900/50 p-4 rounded-xl">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-yellow-400">Skill 2</h3>
-                     <div class="space-y-3">
-                        <div>
-                            <label for="skillMultiplier2" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
-                            <input type="number" id="skillMultiplier2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 3.2">
-                        </div>
-                        <div>
-                            <label for="skillBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
-                            <input type="number" id="skillBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
-                        </div>
-                        <div>
-                            <label for="skillDmgBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
-                            <input type="number" id="skillDmgBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
-                        </div>
-                        <div>
-                            <label for="otherSkillBonus2" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
-                            <input type="number" id="otherSkillBonus2" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
-                        </div>
-                    </div>
+            <!-- 1.1.1 Elemental Resistance -->
+            <h4>1.1.1 Elemental Resistance</h4>
+            <p>Calculated as the sum of Base Resistance and Resistance Penetration.</p>
+
+            <div class="formula-card">
+                <div class="formula-label">Elemental Resistance</div>
+                <div class="formula-content">
+                    $$\text{Res}_{Tot} = \text{Res}_{\text{Base}} - \text{Res PEN}_{\text{Attacker}}$$
                 </div>
+            </div>
 
-                <!-- Skill 3 -->
-                <div class="bg-gray-900/50 p-4 rounded-xl">
-                    <h3 class="text-xl font-semibold mb-4 text-center text-purple-400">Skill 3</h3>
-                     <div class="space-y-3">
-                        <div>
-                            <label for="skillMultiplier3" class="block text-xs font-medium text-gray-400 mb-1">Multiplicador de Skill</label>
-                            <input type="number" id="skillMultiplier3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 5.0">
+            <p>The effective resistance multiplier is calculated non-linearly:</p>
+
+            <ul class="condition-list">
+                <li>
+                    <span class="condition">If $Res_{Total} < 0$:</span>
+                            <span class="result">$1 - \frac{Res_{Total}}{2}$</span>
+                </li>
+                <li>
+                    <span class="condition">If $0 \le Res_{Total} < 0.8$:</span>
+                            <span class="result">$1 - Res_{Total}$</span>
+                </li>
+                <li>
+                    <span class="condition">If $Res_{Total} \ge 0.8$:</span>
+                    <span class="result">$\frac{1}{1 + 5 \times Res_{Total}}$</span>
+                </li>
+            </ul>
+
+            <!-- 1.1.2 Defense -->
+            <h4>1.1.2 Defense (Def%)</h4>
+            <p>Defense reduction applies to the enemy stats before entering the formula. The result can be max
+                <strong>200%</strong>.
+            </p>
+
+            <div class="formula-card">
+                <div class="formula-label">Enemy Defense Formula</div>
+                <div class="formula-content">
+                    $$\text{Enemy Defense} = 792 + 8 \times \text{Level}_{\text{Enemy}}$$
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <div class="formula-label">Def% Formula</div>
+                <div class="formula-content">
+                    $$\text{Def}\% = \frac{800 + \text{Level}_{\text{Attacker}} \times 8}{\text{Defense}_{\text{Target}}
+                    \times (1 - \text{Def Ignore}_{\text{Attacker}}) + 800 + \text{Level}_{\text{Attacker}} \times 8}$$
+                </div>
+            </div>
+
+            <div class="info-box note">
+                <div class="info-box-icon">📊</div>
+                <div class="info-box-content">
+                    <strong>Notable Def% Values (vs Level 90 Character)</strong>
+                    <div class="stats-grid" style="margin-top: 0.75rem;">
+                        <div class="stat-card">
+                            <div class="stat-label">vs Lv 90 Enemy</div>
+                            <div class="stat-value">50.13%</div>
                         </div>
-                        <div>
-                            <label for="skillBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Skill (%)</label>
-                            <input type="number" id="skillBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 15">
+                        <div class="stat-card">
+                            <div class="stat-label">vs Lv 100 Enemy</div>
+                            <div class="stat-value">48.84%</div>
                         </div>
-                        <div>
-                            <label for="skillDmgBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus de Dano de Skill (%)</label>
-                            <input type="number" id="skillDmgBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 20">
-                        </div>
-                        <div>
-                            <label for="otherSkillBonus3" class="block text-xs font-medium text-gray-400 mb-1">Bônus Outro Skill (%)</label>
-                            <input type="number" id="otherSkillBonus3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white text-sm" placeholder="Ex: 10">
+                        <div class="stat-card">
+                            <div class="stat-label">vs Lv 120 Enemy</div>
+                            <div class="stat-value">46.45%</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Seção do Inimigo -->
-            <section>
-                <h2 class="text-2xl font-semibold mb-4 border-b-2 border-gray-700 pb-2 text-red-400">Atributos do Inimigo</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="enemyResistance" class="block text-sm font-medium text-gray-300 mb-1">Resistência do Inimigo (%)</label>
-                        <input type="number" id="enemyResistance" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Ex: 10">
-                    </div>
-                    <div>
-                        <label for="defenseReduction" class="block text-sm font-medium text-gray-300 mb-1">Redução de Defesa (%)</label>
-                        <input type="number" id="defenseReduction" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-red-500 focus:border-red-500" placeholder="Ex: 0">
+            <!-- 1.1.3 Reduction -->
+            <h4>1.1.3 Reduction</h4>
+            <p>Elemental and Damage reductions work independently using the formula:</p>
+            <div class="formula-card">
+                <div class="formula-content">
+                    $$1 - (\text{Base} + \text{Bonus})$$
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- 1.2 Scaling -->
+            <h3 id="scaling">1.2 Scaling</h3>
+
+            <div class="formula-card highlight">
+                <div class="formula-label">Base Damage Formula</div>
+                <div class="formula-content">
+                    $$\text{Base DMG} = (\text{Attr} \times \text{MV}\% \times \text{Innate DMG}\%) + \text{Flat Damage}
+                    + \text{Flat Bonus}$$
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <div class="info-box-icon">📸</div>
+                <div class="info-box-content">
+                    <strong>Snapshot</strong>
+                    Abilities snapshot stats/buffs at the time of casting.
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- 1.3 Bonuses -->
+            <h3 id="bonuses">1.3 Bonuses</h3>
+            <p>Bonuses are multiplicative in the formula:</p>
+
+            <div class="formula-card highlight">
+                <div class="formula-label">Bonuses Formula</div>
+                <div class="formula-content">
+                    $$\text{Bonuses} = \text{Crit Multiplier} \times \text{Damage Bonus}\% \times \text{Special
+                    Damage}\% \times \text{DMG Amplify}$$
+                </div>
+            </div>
+
+            <!-- 1.3.1 Crit Multiplier -->
+            <div class="subsection-card">
+                <h4>1.3.1 Crit Multiplier</h4>
+                <p>Base stats: <code>5% Rate</code>, <code>150% Damage</code></p>
+                <ul class="styled-list">
+                    <li><strong>Non-Crit:</strong> 1</li>
+                    <li><strong>Crit:</strong> <code>Crit Damage%</code></li>
+                    <li><strong>Average:</strong> $1 + \text{Crit Rate}\% \times (\text{Crit Damage}\% - 1)$</li>
+                </ul>
+            </div>
+
+            <!-- 1.3.2 Damage Bonus -->
+            <div class="subsection-card">
+                <h4>1.3.2 Damage Bonus</h4>
+                <div class="formula-card" style="margin-top: 1rem;">
+                    <div class="formula-content">
+                        $$\text{Damage}\% = 1 + \text{General}\% + \text{Element}\% + \text{Type}\%$$
                     </div>
                 </div>
-            </section>
-            
-            <!-- Resultados -->
-            <section class="bg-gray-900 rounded-xl p-6 mt-8">
-                 <h2 class="text-2xl font-semibold mb-4 text-center text-white">Dano Final Calculado</h2>
-                 <div class="space-y-4">
-                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                        <span class="font-medium text-lg text-green-400">Dano da Skill 1:</span>
-                        <span id="result1" class="font-bold text-2xl text-white">0</span>
+                <p>Types include: <code>Resonance Skill</code>, <code>Normal Attack</code>, <code>Heavy Attack</code>,
+                    <code>Liberation</code>, <code>Intro</code>, <code>Outro</code>, <code>Echoes</code>
+                </p>
+            </div>
+
+            <!-- 1.3.4 Damage Amplify -->
+            <div class="subsection-card">
+                <h4>1.3.4 Damage Amplify</h4>
+                <p>Recognized by the keyword <span class="keyword">"Deepen"</span>. It acts as a final multiplicative
+                    layer.</p>
+                <div class="formula-card" style="margin-top: 1rem;">
+                    <div class="formula-content">
+                        $$\text{DMG Amplify Tot} = 1 + (\text{Target Amplify} + \text{Attacker Amplify})$$
                     </div>
-                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                        <span class="font-medium text-lg text-yellow-400">Dano da Skill 2:</span>
-                        <span id="result2" class="font-bold text-2xl text-white">0</span>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- 1.6 DoT -->
+            <h3 id="dot">1.6 DoT (Damage over Time)</h3>
+            <p>DoT effects trigger every <strong>3 seconds</strong>.</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Arbitrary Constant</div>
+                    <div class="stat-value">1.25078</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Level Multiplier (Lv 90)</div>
+                    <div class="stat-value">3674</div>
+                </div>
+            </div>
+
+            <h4>Stack Caps</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Name</th>
+                            <th>Stack Cap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🌀 Aero</td>
+                            <td>Erosion</td>
+                            <td class="table-value">3 (+3 with Rover)</td>
+                        </tr>
+                        <tr>
+                            <td>✨ Spectro</td>
+                            <td>Frazzle</td>
+                            <td class="table-value">10</td>
+                        </tr>
+                        <tr>
+                            <td>🔥 Fusion</td>
+                            <td>Burst/Flare/Bane</td>
+                            <td class="table-na">Unaware</td>
+                        </tr>
+                        <tr>
+                            <td>❄️ Glacio</td>
+                            <td>Chafe</td>
+                            <td class="table-na">Unaware</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Stack Multipliers (Approx)</h4>
+            <ul class="styled-list">
+                <li><strong>Frazzle (10 stacks):</strong> <code>1.995</code></li>
+                <li><strong>Erosion (3 stacks):</strong> <code>1.799</code></li>
+            </ul>
+        </section>
+
+        <!-- Section 2: Toughness -->
+        <section class="section" id="toughness">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2>Toughness (Hardness)</h2>
+            </div>
+
+            <p>Toughness damage stuns the enemy when depleted.</p>
+            <p><strong>Lv 90 Scaling:</strong> <code>262x</code> Level 1 values.</p>
+
+            <div class="formula-card highlight">
+                <div class="formula-label">Hardness Damage Formula</div>
+                <div class="formula-content">
+                    $$\text{Hardness Damage} = ((\text{Dmg Done} \times \text{Hardness}_{\text{Skill}}) + \text{Tough})
+                    \times \text{Modifiers} + \text{Parry}$$
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Parry Depletion</div>
+                    <div class="stat-value">12.5%</div>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">of enemy's total Toughness bar</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Bosses Bar Depletion</div>
+                    <div class="stat-value">~8 Parries</div>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">to fully break most bosses</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Energy -->
+        <section class="section" id="energy">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2>Energy</h2>
+            </div>
+
+            <!-- 3.1 Resonance Liberation Energy -->
+            <div class="subsection-card">
+                <h3 style="margin-top: 0; padding-left: 0; border-left: none; color: var(--accent-cyan);">3.1 Resonance
+                    Liberation Energy</h3>
+                <p>Used for Ultimates. Affected by <strong>Energy Regen%</strong>.</p>
+                <ul class="styled-list">
+                    <li><strong>Off-field:</strong> Generates <code>50%</code> of on-field energy (unaffected by Regen%)
+                    </li>
+                    <li><strong>Perfect Dodge:</strong> Grants <code>~3 Energy</code></li>
+                </ul>
+            </div>
+
+            <!-- 3.2 Concerto Energy -->
+            <div class="subsection-card">
+                <h3 style="margin-top: 0; padding-left: 0; border-left: none; color: var(--accent-purple);">3.2 Concerto
+                    Energy</h3>
+                <p>Max <code>100</code>. Used for Intro/Outro skills. <strong class="keyword">NOT</strong> affected by
+                    Energy Regen%.</p>
+            </div>
+
+            <!-- 3.3 Special Energy -->
+            <div class="subsection-card">
+                <h3 style="margin-top: 0; padding-left: 0; border-left: none; color: var(--accent-pink);">3.3 Special
+                    Energy</h3>
+                <p>Tied to <em>Forte Circuit</em> (the specific mechanic of each character).</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Echoes -->
+        <section class="section" id="echoes">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2>Echoes</h2>
+            </div>
+
+            <p>Echoes are equipped up to a maximum <strong>Cost of 12</strong>.</p>
+
+            <div class="info-box tip">
+                <div class="info-box-icon">🎯</div>
+                <div class="info-box-content">
+                    <strong>Optimal Setup</strong>
+                    <code style="font-size: 1.1rem;">4-3-3-1-1</code> (Cost)
+                </div>
+            </div>
+
+            <!-- 4.1 Main Stats -->
+            <h3 id="main-stats">4.1 Main Stats (Level 25 Values)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stat</th>
+                            <th>4 Cost (Boss)</th>
+                            <th>3 Cost (Elite)</th>
+                            <th>1 Cost (Mob)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Crit Rate</strong></td>
+                            <td class="table-value">22.00%</td>
+                            <td class="table-na">-</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Crit Dmg</strong></td>
+                            <td class="table-value">44.00%</td>
+                            <td class="table-na">-</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ATK%</strong></td>
+                            <td class="table-value">33.00%</td>
+                            <td class="table-value">30.00%</td>
+                            <td class="table-value">18.00%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HP%</strong></td>
+                            <td class="table-value">33.00%</td>
+                            <td class="table-value">30.00%</td>
+                            <td class="table-value">22.80%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DEF%</strong></td>
+                            <td class="table-value">41.80%</td>
+                            <td class="table-value">38.00%</td>
+                            <td class="table-value">18.00%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Healing Bonus</strong></td>
+                            <td class="table-value">26.40%</td>
+                            <td class="table-na">-</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Elem Dmg%</strong></td>
+                            <td class="table-na">-</td>
+                            <td class="table-value">30.00%</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Energy Regen</strong></td>
+                            <td class="table-na">-</td>
+                            <td class="table-value">32.00%</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flat HP</strong></td>
+                            <td class="table-na">-</td>
+                            <td class="table-na">-</td>
+                            <td class="table-value">2280</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flat ATK</strong></td>
+                            <td class="table-value">150</td>
+                            <td class="table-value">100</td>
+                            <td class="table-na">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4.2 Substats -->
+            <h3 id="substats">4.2 Substats</h3>
+            <p>Each echo has <strong>5 substats</strong>. Ranges follow a <em>Gaussian distribution</em>.</p>
+
+            <h4>Average Values (Max Rolls)</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Substat</th>
+                            <th>Average</th>
+                            <th>Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Crit Rate</strong></td>
+                            <td class="table-value">~8.4%</td>
+                            <td>6.3% - 10.5%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Crit Dmg</strong></td>
+                            <td class="table-value">~16.8%</td>
+                            <td>12.6% - 21.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ATK% / HP%</strong></td>
+                            <td class="table-value">~9.0%</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DEF%</strong></td>
+                            <td class="table-value">~11.39%</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Energy Regen</strong></td>
+                            <td class="table-value">~9.6%</td>
+                            <td>6.8% - 12.4%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flat ATK</strong></td>
+                            <td class="table-value">55</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flat HP</strong></td>
+                            <td class="table-value">450</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4.3 Substat Optimization Rules -->
+            <h3 id="optimization">4.3 Substat Optimization Rules (TC Standards)</h3>
+            <p>For theorycrafting calculations:</p>
+
+            <ol class="styled-list" style="counter-reset: item; padding-left: 0;">
+                <li style="border-left-color: var(--accent-purple);">Max <strong>5 rolls</strong> per piece.</li>
+                <li style="border-left-color: var(--accent-purple);"><strong>Crit Limit:</strong> Max
+                    <code>9 rolls</code> total (Rate + Dmg).
+                </li>
+                <li style="border-left-color: var(--accent-purple);"><strong>Unique Substats:</strong> Assumed
+                    <code>12 fixed</code> and <code>12 fluid</code> substats in a full set.
+                </li>
+                <li style="border-left-color: var(--accent-purple);"><strong>Values:</strong> Assumed "Average" based on
+                    median.</li>
+            </ol>
+        </section>
+
+        <!-- Section 5: Damage Calculator -->
+        <section class="section" id="calculator">
+            <div class="section-header">
+                <div class="section-number">🧮</div>
+                <h2>Damage Calculator</h2>
+            </div>
+
+            <p>Use this interactive calculator to compute damage for up to <strong>4 skills</strong> using the formulas
+                documented above.</p>
+
+            <div class="calculator-section" id="calculatorForm">
+                <!-- Character Stats -->
+                <div class="calc-card" style="margin-bottom: 1.5rem;">
+                    <div class="toggle-section" onclick="toggleSection('charStats')">
+                        <span class="calc-card-title cyan" style="margin: 0;">⚔️ Character Stats</span>
+                        <span class="arrow">▼</span>
                     </div>
-                    <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
-                        <span class="font-medium text-lg text-purple-400">Dano da Skill 3:</span>
-                        <span id="result3" class="font-bold text-2xl text-white">0</span>
+                    <div class="collapsible-content" id="charStats">
+                        <div class="calc-grid">
+                            <div class="input-group">
+                                <label>Base ATK (Character + Weapon)</label>
+                                <input type="number" id="totalAtk" placeholder="e.g., 2500" value="2500">
+                            </div>
+                            <div class="input-group">
+                                <label>ATK% Bonus</label>
+                                <input type="number" id="atkPercent" placeholder="e.g., 80" value="80">
+                            </div>
+                            <div class="input-group">
+                                <label>Flat ATK Bonus</label>
+                                <input type="number" id="flatAtk" placeholder="e.g., 300" value="300">
+                            </div>
+                            <div class="input-group">
+                                <label>Character Level</label>
+                                <input type="number" id="charLevel" placeholder="e.g., 90" value="90">
+                            </div>
+                        </div>
                     </div>
-                 </div>
-            </section>
-        </main>
+                </div>
+
+                <!-- Crit & Damage Bonuses -->
+                <div class="calc-card" style="margin-bottom: 1.5rem;">
+                    <div class="toggle-section" onclick="toggleSection('critBonuses')">
+                        <span class="calc-card-title purple" style="margin: 0;">💥 Crit & Damage Bonuses</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="critBonuses">
+                        <div class="calc-grid">
+                            <div class="input-group">
+                                <label>Crit Rate %</label>
+                                <input type="number" id="critRate" placeholder="e.g., 50" value="50">
+                            </div>
+                            <div class="input-group">
+                                <label>Crit Damage %</label>
+                                <input type="number" id="critDmg" placeholder="e.g., 200" value="200">
+                            </div>
+                            <div class="input-group">
+                                <label>Elemental DMG Bonus %</label>
+                                <input type="number" id="elemDmg" placeholder="e.g., 46" value="46">
+                            </div>
+                            <div class="input-group">
+                                <label>General DMG Bonus %</label>
+                                <input type="number" id="generalDmg" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>DMG Amplify (Deepen) %</label>
+                                <input type="number" id="dmgAmplify" placeholder="e.g., 20" value="20">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enemy Stats -->
+                <div class="calc-card" style="margin-bottom: 1.5rem;">
+                    <div class="toggle-section" onclick="toggleSection('enemyStats')">
+                        <span class="calc-card-title red" style="margin: 0;">👹 Enemy Stats</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="enemyStats">
+                        <div class="calc-grid">
+                            <div class="input-group">
+                                <label>Enemy Level</label>
+                                <input type="number" id="enemyLevel" placeholder="e.g., 90" value="90">
+                            </div>
+                            <div class="input-group">
+                                <label>Enemy Elemental RES %</label>
+                                <input type="number" id="enemyRes" placeholder="e.g., 10" value="10">
+                            </div>
+                            <div class="input-group">
+                                <label>RES Shred/Penetration %</label>
+                                <input type="number" id="resPen" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>DEF Ignore %</label>
+                                <input type="number" id="defIgnore" placeholder="e.g., 0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Configuration -->
+                <div class="calc-card">
+                    <div class="calc-card-title green">🎯 Skills Configuration</div>
+                    <div class="skills-grid">
+                        <!-- Skill 1 -->
+                        <div class="skill-card skill-1">
+                            <div class="skill-header">
+                                <span class="skill-name">Skill 1</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Motion Value (MV%)</label>
+                                <input type="number" id="mv1" placeholder="e.g., 250" value="250">
+                            </div>
+                            <div class="input-group">
+                                <label>Innate DMG Bonus %</label>
+                                <input type="number" id="innate1" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Skill Type Bonus %</label>
+                                <input type="number" id="typeBonus1" placeholder="e.g., 30" value="30">
+                            </div>
+                        </div>
+
+                        <!-- Skill 2 -->
+                        <div class="skill-card skill-2">
+                            <div class="skill-header">
+                                <span class="skill-name">Skill 2</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Motion Value (MV%)</label>
+                                <input type="number" id="mv2" placeholder="e.g., 350" value="350">
+                            </div>
+                            <div class="input-group">
+                                <label>Innate DMG Bonus %</label>
+                                <input type="number" id="innate2" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Skill Type Bonus %</label>
+                                <input type="number" id="typeBonus2" placeholder="e.g., 30" value="30">
+                            </div>
+                        </div>
+
+                        <!-- Skill 3 -->
+                        <div class="skill-card skill-3">
+                            <div class="skill-header">
+                                <span class="skill-name">Skill 3</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Motion Value (MV%)</label>
+                                <input type="number" id="mv3" placeholder="e.g., 500" value="500">
+                            </div>
+                            <div class="input-group">
+                                <label>Innate DMG Bonus %</label>
+                                <input type="number" id="innate3" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Skill Type Bonus %</label>
+                                <input type="number" id="typeBonus3" placeholder="e.g., 30" value="30">
+                            </div>
+                        </div>
+
+                        <!-- Skill 4 -->
+                        <div class="skill-card skill-4">
+                            <div class="skill-header">
+                                <span class="skill-name">Skill 4</span>
+                            </div>
+                            <div class="input-group">
+                                <label>Motion Value (MV%)</label>
+                                <input type="number" id="mv4" placeholder="e.g., 800" value="800">
+                            </div>
+                            <div class="input-group">
+                                <label>Innate DMG Bonus %</label>
+                                <input type="number" id="innate4" placeholder="e.g., 0" value="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Skill Type Bonus %</label>
+                                <input type="number" id="typeBonus4" placeholder="e.g., 50" value="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results-section">
+                    <div class="results-title">📊 Calculated Damage Results</div>
+                    <div class="results-grid">
+                        <div class="result-card skill-1">
+                            <div class="result-label">Skill 1 (Avg)</div>
+                            <div class="result-value" id="result1">0</div>
+                            <div class="result-breakdown" id="breakdown1">Crit: 0 | Non-Crit: 0</div>
+                        </div>
+                        <div class="result-card skill-2">
+                            <div class="result-label">Skill 2 (Avg)</div>
+                            <div class="result-value" id="result2">0</div>
+                            <div class="result-breakdown" id="breakdown2">Crit: 0 | Non-Crit: 0</div>
+                        </div>
+                        <div class="result-card skill-3">
+                            <div class="result-label">Skill 3 (Avg)</div>
+                            <div class="result-value" id="result3">0</div>
+                            <div class="result-breakdown" id="breakdown3">Crit: 0 | Non-Crit: 0</div>
+                        </div>
+                        <div class="result-card skill-4">
+                            <div class="result-label">Skill 4 (Avg)</div>
+                            <div class="result-value" id="result4">0</div>
+                            <div class="result-breakdown" id="breakdown4">Crit: 0 | Non-Crit: 0</div>
+                        </div>
+                    </div>
+                    <div class="calc-info">
+                        💡 Results update automatically. Formula:
+                        <code>Damage = Base DMG × Def% × Elem RES × DMG Bonus × Crit × Amplify</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Wuthering Waves Theorycrafting Documentation</p>
+            <p>Last updated: May 18, 2025 | <a href="#damage-formula">Back to top ↑</a></p>
+        </footer>
     </div>
 
     <script>
-        // Função para obter o valor numérico de um input, tratando valores vazios como 0
+        // Toggle collapsible sections
+        function toggleSection(id) {
+            const content = document.getElementById(id);
+            const toggle = content.previousElementSibling;
+            content.classList.toggle('collapsed');
+            toggle.classList.toggle('collapsed');
+        }
+
+        // Get input value helper
         const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
 
-        // Função principal para calcular o dano
-        function calculateDamage() {
-            // --- ATRIBUTOS GERAIS ---
-            const baseAtk = getVal('baseAtk');
-            const weaponAtk = getVal('weaponAtk');
-            const bonusAtkPercent = getVal('bonusAtkPercent');
-            const flatAtk = getVal('flatAtk');
-            const elementalDmgBonus = getVal('elementalDmgBonus');
-            const critDmgMultiplier = getVal('critDmgMultiplier');
-
-            // --- ATRIBUTOS DO INIMIGO ---
-            const enemyResistance = getVal('enemyResistance');
-            const defenseReduction = getVal('defenseReduction');
-            
-            // --- CÁLCULOS BASE (comuns a todas as skills) ---
-
-            // Termo A: ((ATK BASE + ATK ARMA) * (1 + BONUS ATK%)) + BONUS FLAT ATK
-            const totalAtk = ((baseAtk + weaponAtk) * (1 + bonusAtkPercent / 100)) + flatAtk;
-
-            // Termo G: (1 - RESISTENCIA INIMIGA + REDUÇAO DE DEFESA)
-            const defenseMultiplier = (1 - enemyResistance / 100 + defenseReduction / 100);
-
-            // --- LOOP PARA CALCULAR O DANO DE CADA SKILL ---
-            for (let i = 1; i <= 3; i++) {
-                // --- ATRIBUTOS ESPECÍFICOS DA SKILL ATUAL ---
-                const skillMultiplier = getVal(`skillMultiplier${i}`);
-                const skillBonus = getVal(`skillBonus${i}`);
-                const skillDmgBonus = getVal(`skillDmgBonus${i}`);
-                const otherSkillBonus = getVal(`otherSkillBonus${i}`);
-
-                // --- CÁLCULOS ESPECÍFICOS DA SKILL ---
-
-                // Termo B: (MULTIPLICADOR DE SKILL * (1 + BONUS DE SKILL))
-                const skillPower = skillMultiplier * (1 + skillBonus / 100);
-
-                // Termo C: (1 + BONUS DE DANO ELEMENTAL + BONUS DE DANO DE SKILL)
-                const totalDmgBonus = (1 + elementalDmgBonus / 100 + skillDmgBonus / 100);
-
-                // Termo D: (1 + TOTAL BONUS OUTRO SKILL)
-                const otherBonusMultiplier = (1 + otherSkillBonus / 100);
-                
-                // --- CÁLCULO FINAL DO DANO ---
-                // Formula: A * B * C * D * E * F * G
-                // Onde F = 0.48 (constante da fórmula original)
-                const finalDamage = totalAtk *
-                                    skillPower *
-                                    totalDmgBonus *
-                                    otherBonusMultiplier *
-                                    critDmgMultiplier *
-                                    0.48 * defenseMultiplier;
-
-                // Exibe o resultado formatado
-                const resultElement = document.getElementById(`result${i}`);
-                if (resultElement) {
-                    resultElement.textContent = finalDamage.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-                }
+        // Calculate elemental resistance multiplier
+        function calcResMultiplier(resTotal) {
+            if (resTotal < 0) {
+                return 1 - (resTotal / 2);
+            } else if (resTotal < 0.8) {
+                return 1 - resTotal;
+            } else {
+                return 1 / (1 + 5 * resTotal);
             }
         }
 
-        // Adiciona um event listener a todo o formulário para recalcular ao mudar qualquer valor
-        const form = document.getElementById('calculatorForm');
-        form.addEventListener('input', calculateDamage);
+        // Main calculation function
+        function calculateDamage() {
+            // Character Stats
+            const baseAtk = getVal('totalAtk');
+            const atkPercent = getVal('atkPercent') / 100;
+            const flatAtk = getVal('flatAtk');
+            const charLevel = getVal('charLevel');
 
-        // Calcula o dano uma vez no carregamento da página para zerar os resultados
+            // Calculate Total ATK
+            const totalAtk = (baseAtk * (1 + atkPercent)) + flatAtk;
+
+            // Crit & Bonuses
+            const critRate = Math.min(getVal('critRate') / 100, 1); // Cap at 100%
+            const critDmg = getVal('critDmg') / 100;
+            const elemDmg = getVal('elemDmg') / 100;
+            const generalDmg = getVal('generalDmg') / 100;
+            const dmgAmplify = getVal('dmgAmplify') / 100;
+
+            // Enemy Stats
+            const enemyLevel = getVal('enemyLevel');
+            const enemyRes = getVal('enemyRes') / 100;
+            const resPen = getVal('resPen') / 100;
+            const defIgnore = getVal('defIgnore') / 100;
+
+            // Calculate Defense% (Def Multiplier)
+            // Formula: Def% = (800 + Level_Attacker × 8) / (Def_Target × (1 - Def Ignore) + 800 + Level_Attacker × 8)
+            const enemyDef = 792 + 8 * enemyLevel;
+            const attackerDefTerm = 800 + charLevel * 8;
+            const defPercent = attackerDefTerm / (enemyDef * (1 - defIgnore) + attackerDefTerm);
+
+            // Calculate Elemental Resistance Multiplier
+            const resTotal = enemyRes - resPen;
+            const resMultiplier = calcResMultiplier(resTotal);
+
+            // Damage Amplify Multiplier
+            const amplifyMult = 1 + dmgAmplify;
+
+            // Crit Multipliers
+            const nonCritMult = 1;
+            const critMult = critDmg;
+            const avgCritMult = 1 + critRate * (critDmg - 1);
+
+            // Calculate for each skill
+            for (let i = 1; i <= 4; i++) {
+                const mv = getVal(`mv${i}`) / 100; // Motion Value as decimal
+                const innate = 1 + getVal(`innate${i}`) / 100;
+                const typeBonus = getVal(`typeBonus${i}`) / 100;
+
+                // Base Damage = ATK × MV% × Innate
+                const baseDmg = totalAtk * mv * innate;
+
+                // Damage Bonus% = 1 + General% + Element% + Type%
+                const dmgBonus = 1 + generalDmg + elemDmg + typeBonus;
+
+                // Non-Crit Damage
+                const nonCritDmg = baseDmg * defPercent * resMultiplier * dmgBonus * nonCritMult * amplifyMult;
+
+                // Crit Damage
+                const critDmgVal = baseDmg * defPercent * resMultiplier * dmgBonus * critMult * amplifyMult;
+
+                // Average Damage
+                const avgDmg = baseDmg * defPercent * resMultiplier * dmgBonus * avgCritMult * amplifyMult;
+
+                // Update results
+                document.getElementById(`result${i}`).textContent = formatNumber(avgDmg);
+                document.getElementById(`breakdown${i}`).textContent =
+                    `Crit: ${formatNumber(critDmgVal)} | Non-Crit: ${formatNumber(nonCritDmg)}`;
+            }
+        }
+
+        // Format number with locale
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return Math.round(num).toLocaleString('pt-BR');
+        }
+
+        // Add event listeners to all inputs
+        document.getElementById('calculatorForm').addEventListener('input', calculateDamage);
+
+        // Initial calculation
         document.addEventListener('DOMContentLoaded', calculateDamage);
     </script>
 </body>
+
 </html>
