@@ -982,6 +982,234 @@
             overflow-x: auto;
             padding: 0.5rem 0;
         }
+
+        /* Buffs List Styles */
+        .buffs-section {
+            margin-top: 1.5rem;
+        }
+
+        .buff-add-container {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .buff-add-container select {
+            flex: 1;
+            min-width: 180px;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buff-add-container select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .buff-add-container input {
+            width: 120px;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .buff-add-container input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .btn-add-buff {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-buff:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-add-buff:active {
+            transform: translateY(0);
+        }
+
+        .buffs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .buffs-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .buffs-list::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 3px;
+        }
+
+        .buff-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent-green);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .buff-item.removing {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+        }
+
+        .buff-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .buff-type {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .buff-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .btn-remove-buff {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: var(--accent-red);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-buff:hover {
+            background: rgba(239, 68, 68, 0.4);
+            transform: scale(1.1);
+        }
+
+        .buffs-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .buffs-summary {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+        }
+
+        .buffs-summary-title {
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .buffs-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .buffs-summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .buffs-summary-item span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .buffs-summary-item span:last-child {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .btn-clear-buffs {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: var(--accent-red);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-buffs:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
     </style>
 </head>
 
@@ -1591,6 +1819,64 @@
                     </div>
                 </div>
 
+                <!-- Dynamic Buffs Section -->
+                <div class="calc-card" style="margin-bottom: 1.5rem;">
+                    <div class="toggle-section" onclick="toggleSection('dynamicBuffs')">
+                        <span class="calc-card-title yellow" style="margin: 0;">✨ Buffs Dinâmicos</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="collapsible-content" id="dynamicBuffs">
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Adicione buffs de personagens, armas, echos, etc. Os valores são somados aos stats base.
+                        </p>
+
+                        <!-- Add Buff Form -->
+                        <div class="buff-add-container">
+                            <select id="buffType">
+                                <option value="" disabled selected>Selecione o tipo de buff</option>
+                                <optgroup label="Atributos">
+                                    <option value="atkPercent">ATK%</option>
+                                    <option value="flatAtk">ATK Flat</option>
+                                </optgroup>
+                                <optgroup label="Crítico">
+                                    <option value="critRate">Crit Rate%</option>
+                                    <option value="critDmg">Crit DMG%</option>
+                                </optgroup>
+                                <optgroup label="Bônus de Dano">
+                                    <option value="elemDmg">Elemental DMG%</option>
+                                    <option value="generalDmg">General DMG%</option>
+                                    <option value="dmgAmplify">DMG Amplify (Deepen)%</option>
+                                </optgroup>
+                                <optgroup label="Penetração/Redução">
+                                    <option value="resPen">RES Penetration%</option>
+                                    <option value="defIgnore">DEF Ignore%</option>
+                                </optgroup>
+                            </select>
+                            <input type="number" id="buffValue" placeholder="Valor %" step="0.1">
+                            <button class="btn-add-buff" onclick="addBuff()">
+                                <span>+</span> Adicionar
+                            </button>
+                        </div>
+
+                        <!-- Buffs List -->
+                        <div class="buffs-list" id="buffsList">
+                            <div class="buffs-empty">Nenhum buff adicionado ainda</div>
+                        </div>
+
+                        <!-- Buffs Summary -->
+                        <div class="buffs-summary" id="buffsSummary" style="display: none;">
+                            <div class="buffs-summary-title">📊 Total de Buffs Aplicados</div>
+                            <div class="buffs-summary-grid" id="buffsSummaryGrid"></div>
+                        </div>
+
+                        <!-- Clear All Button -->
+                        <button class="btn-clear-buffs" id="btnClearBuffs" onclick="clearAllBuffs()"
+                            style="display: none;">
+                            🗑️ Limpar Todos os Buffs
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Skills Configuration -->
                 <div class="calc-card">
                     <div class="calc-card-title green">🎯 Skills Configuration</div>
@@ -1714,6 +2000,147 @@
     </div>
 
     <script>
+        // ========== BUFFS SYSTEM ==========
+        // Store all dynamic buffs
+        let buffsList = [];
+        let buffIdCounter = 0;
+
+        // Buff type labels for display
+        const buffLabels = {
+            'atkPercent': 'ATK%',
+            'flatAtk': 'ATK Flat',
+            'critRate': 'Crit Rate%',
+            'critDmg': 'Crit DMG%',
+            'elemDmg': 'Elemental DMG%',
+            'generalDmg': 'General DMG%',
+            'dmgAmplify': 'DMG Amplify%',
+            'resPen': 'RES Penetration%',
+            'defIgnore': 'DEF Ignore%'
+        };
+
+        // Add a buff to the list
+        function addBuff() {
+            const typeSelect = document.getElementById('buffType');
+            const valueInput = document.getElementById('buffValue');
+
+            const type = typeSelect.value;
+            const value = parseFloat(valueInput.value);
+
+            if (!type) {
+                alert('Por favor, selecione um tipo de buff!');
+                return;
+            }
+
+            if (isNaN(value) || value === 0) {
+                alert('Por favor, insira um valor válido!');
+                return;
+            }
+
+            // Create buff object
+            const buff = {
+                id: buffIdCounter++,
+                type: type,
+                value: value,
+                label: buffLabels[type]
+            };
+
+            buffsList.push(buff);
+
+            // Reset inputs
+            typeSelect.selectedIndex = 0;
+            valueInput.value = '';
+
+            // Update UI
+            renderBuffsList();
+            updateBuffsSummary();
+            calculateDamage();
+        }
+
+        // Remove a buff from the list
+        function removeBuff(buffId) {
+            const buffElement = document.querySelector(`[data-buff-id="${buffId}"]`);
+            if (buffElement) {
+                buffElement.classList.add('removing');
+                setTimeout(() => {
+                    buffsList = buffsList.filter(b => b.id !== buffId);
+                    renderBuffsList();
+                    updateBuffsSummary();
+                    calculateDamage();
+                }, 300);
+            }
+        }
+
+        // Clear all buffs
+        function clearAllBuffs() {
+            buffsList = [];
+            renderBuffsList();
+            updateBuffsSummary();
+            calculateDamage();
+        }
+
+        // Render the buffs list UI
+        function renderBuffsList() {
+            const container = document.getElementById('buffsList');
+            const clearBtn = document.getElementById('btnClearBuffs');
+
+            if (buffsList.length === 0) {
+                container.innerHTML = '<div class="buffs-empty">Nenhum buff adicionado ainda</div>';
+                clearBtn.style.display = 'none';
+                return;
+            }
+
+            clearBtn.style.display = 'block';
+
+            container.innerHTML = buffsList.map(buff => `
+                <div class="buff-item" data-buff-id="${buff.id}">
+                    <div class="buff-info">
+                        <span class="buff-type">${buff.label}</span>
+                        <span class="buff-value">+${buff.value}${buff.type === 'flatAtk' ? '' : '%'}</span>
+                    </div>
+                    <button class="btn-remove-buff" onclick="removeBuff(${buff.id})" title="Remover buff">
+                        ×
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Calculate total buffs by type
+        function getBuffTotals() {
+            const totals = {};
+
+            for (const buff of buffsList) {
+                if (!totals[buff.type]) {
+                    totals[buff.type] = 0;
+                }
+                totals[buff.type] += buff.value;
+            }
+
+            return totals;
+        }
+
+        // Update the buffs summary display
+        function updateBuffsSummary() {
+            const summaryContainer = document.getElementById('buffsSummary');
+            const summaryGrid = document.getElementById('buffsSummaryGrid');
+
+            if (buffsList.length === 0) {
+                summaryContainer.style.display = 'none';
+                return;
+            }
+
+            summaryContainer.style.display = 'block';
+            const totals = getBuffTotals();
+
+            summaryGrid.innerHTML = Object.entries(totals).map(([type, value]) => `
+                <div class="buffs-summary-item">
+                    <span>${buffLabels[type]}</span>
+                    <span>+${value}${type === 'flatAtk' ? '' : '%'}</span>
+                </div>
+            `).join('');
+        }
+
+        // ========== CALCULATOR FUNCTIONS ==========
+
         // Toggle collapsible sections
         function toggleSection(id) {
             const content = document.getElementById(id);
@@ -1738,27 +2165,30 @@
 
         // Main calculation function
         function calculateDamage() {
-            // Character Stats
+            // Get buff totals
+            const buffTotals = getBuffTotals();
+
+            // Character Stats (base + buffs)
             const baseAtk = getVal('totalAtk');
-            const atkPercent = getVal('atkPercent') / 100;
-            const flatAtk = getVal('flatAtk');
+            const atkPercent = (getVal('atkPercent') + (buffTotals.atkPercent || 0)) / 100;
+            const flatAtk = getVal('flatAtk') + (buffTotals.flatAtk || 0);
             const charLevel = getVal('charLevel');
 
             // Calculate Total ATK
             const totalAtk = (baseAtk * (1 + atkPercent)) + flatAtk;
 
-            // Crit & Bonuses
-            const critRate = Math.min(getVal('critRate') / 100, 1); // Cap at 100%
-            const critDmg = getVal('critDmg') / 100;
-            const elemDmg = getVal('elemDmg') / 100;
-            const generalDmg = getVal('generalDmg') / 100;
-            const dmgAmplify = getVal('dmgAmplify') / 100;
+            // Crit & Bonuses (base + buffs)
+            const critRate = Math.min((getVal('critRate') + (buffTotals.critRate || 0)) / 100, 1); // Cap at 100%
+            const critDmg = (getVal('critDmg') + (buffTotals.critDmg || 0)) / 100;
+            const elemDmg = (getVal('elemDmg') + (buffTotals.elemDmg || 0)) / 100;
+            const generalDmg = (getVal('generalDmg') + (buffTotals.generalDmg || 0)) / 100;
+            const dmgAmplify = (getVal('dmgAmplify') + (buffTotals.dmgAmplify || 0)) / 100;
 
-            // Enemy Stats
+            // Enemy Stats (base + buffs for penetration/ignore)
             const enemyLevel = getVal('enemyLevel');
             const enemyRes = getVal('enemyRes') / 100;
-            const resPen = getVal('resPen') / 100;
-            const defIgnore = getVal('defIgnore') / 100;
+            const resPen = (getVal('resPen') + (buffTotals.resPen || 0)) / 100;
+            const defIgnore = (getVal('defIgnore') + (buffTotals.defIgnore || 0)) / 100;
 
             // Calculate Defense% (Def Multiplier)
             // Formula: Def% = (800 + Level_Attacker × 8) / (Def_Target × (1 - Def Ignore) + 800 + Level_Attacker × 8)
@@ -1815,6 +2245,16 @@
             }
             return Math.round(num).toLocaleString('pt-BR');
         }
+
+        // Allow pressing Enter to add buff
+        document.addEventListener('DOMContentLoaded', function () {
+            const buffValueInput = document.getElementById('buffValue');
+            buffValueInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    addBuff();
+                }
+            });
+        });
 
         // Add event listeners to all inputs
         document.getElementById('calculatorForm').addEventListener('input', calculateDamage);
